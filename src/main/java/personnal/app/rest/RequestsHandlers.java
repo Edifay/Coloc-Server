@@ -2,9 +2,11 @@ package personnal.app.rest;
 
 import org.springframework.web.bind.annotation.*;
 import personnal.app.logic.ShoppingListManager;
+import personnal.app.logic.TodoListHandler;
 import personnal.app.logic.TransactionsManager;
 import personnal.app.logic.utils.Person;
 import personnal.app.logic.utils.ShoppingItem;
+import personnal.app.logic.utils.TodoAction;
 import personnal.app.logic.utils.Transaction;
 
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class RequestsHandlers {
 
     @PostMapping("/add-item")
     public static boolean addItem(@RequestBody ShoppingItem item,
-                                            @RequestParam(value = "code") String code) throws Exception {
+                                  @RequestParam(value = "code") String code) throws Exception {
         if (!code.equals(password))
             throw new Exception("Wrong code !");
         ShoppingListManager.addItem(item);
@@ -97,6 +99,34 @@ public class RequestsHandlers {
         if (!code.equals(password))
             throw new Exception("Wrong code !");
         ShoppingListManager.removeItem(new ShoppingItem(id));
+        return true;
+    }
+
+    // --------------------- T0DO LIST ---------------------
+
+    @GetMapping("/get-todo-list")
+    public static ArrayList<TodoAction> getTodoList(@RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        return TodoListHandler.getTodoList();
+    }
+
+
+    @PostMapping("/add-action")
+    public static boolean addAction(@RequestBody TodoAction item,
+                                    @RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        TodoListHandler.addTodoAction(item);
+        return true;
+    }
+
+    @GetMapping("/remove-action")
+    public static boolean removeAction(@RequestParam(value = "action_id") String id, @RequestParam(value =
+            "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        TodoListHandler.removeTodoAction(new TodoAction(id));
         return true;
     }
 
