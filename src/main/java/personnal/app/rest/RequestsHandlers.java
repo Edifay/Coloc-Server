@@ -75,13 +75,10 @@ public class RequestsHandlers {
 
 
     @GetMapping("/get-shopping-list")
-    public static ArrayList<ShoppingItem> getShoppingList(@RequestParam(value = "start", defaultValue = "0") int start,
-                                                          @RequestParam(value = "end", defaultValue =
-                                                                 Integer.MAX_VALUE + "") int end,
-                                                          @RequestParam(value = "code") String code) throws Exception {
+    public static ArrayList<ShoppingItem> getShoppingList(@RequestParam(value = "code") String code) throws Exception {
         if (!code.equals(password))
             throw new Exception("Wrong code !");
-        return ShoppingListManager.getShoppingList(start, end);
+        return ShoppingListManager.getShoppingList();
     }
 
 

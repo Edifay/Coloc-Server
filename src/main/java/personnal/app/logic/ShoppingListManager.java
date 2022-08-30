@@ -2,6 +2,7 @@ package personnal.app.logic;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import personnal.app.logic.utils.ItemType;
 import personnal.app.logic.utils.ShoppingItem;
 import personnal.app.logic.utils.Transaction;
 
@@ -33,8 +34,7 @@ public class ShoppingListManager {
     }
 
     public static void checkFile() {
-        if (!file.exists())
-            save();
+        if (!file.exists()) save();
     }
 
     public static void save() {
@@ -49,10 +49,8 @@ public class ShoppingListManager {
     public static void addItem(ShoppingItem item) {
         if (!shoppingItems.contains(item)) {
             shoppingItems.add(item);
-            if (item.getId() == null)
-                item.generateId();
-        } else
-            shoppingItems.set(shoppingItems.indexOf(item), item);
+            if (item.getId() == null) item.generateId();
+        } else shoppingItems.set(shoppingItems.indexOf(item), item);
         save();
     }
 
@@ -61,18 +59,14 @@ public class ShoppingListManager {
         save();
     }
 
-    public static ArrayList<ShoppingItem> getShoppingList(int start, int end) {
-        if (start > end) {
-            int temp = end;
-            end = start;
-            start = temp;
+    public static ArrayList<ShoppingItem> getShoppingList() {
+        ArrayList<ShoppingItem> sortedItems = new ArrayList<>();
+        for (ItemType value : ItemType.values()) {
+            sortedItems.add(new ShoppingItem("separator", "", 0, value));
+            for (ShoppingItem item : shoppingItems)
+                if (item.getType().equals(value)) sortedItems.add(item);
         }
-        if (start < 0)
-            start = 0;
-        if (end > shoppingItems.size())
-            end = shoppingItems.size();
-
-        return new ArrayList<>(shoppingItems.subList(start, end));
+        return sortedItems;
 
     }
 

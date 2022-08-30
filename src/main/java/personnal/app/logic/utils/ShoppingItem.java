@@ -8,6 +8,7 @@ public class ShoppingItem {
     protected String description;
 
     protected int count;
+    protected ItemType type;
 
     protected String id;
 
@@ -15,11 +16,12 @@ public class ShoppingItem {
 
     }
 
-    public ShoppingItem(final String name, final String description, final int count) {
+    public ShoppingItem(final String name, final String description, final int count, final ItemType type) {
         this.id = IDgenerator.generate(10);
         this.name = name;
         this.description = description;
         this.count = count;
+        this.type = type;
     }
 
     public ShoppingItem(final String id) {
@@ -42,7 +44,6 @@ public class ShoppingItem {
         this.id = id;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -57,6 +58,14 @@ public class ShoppingItem {
 
     public int getCount() {
         return count;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     public void generateId() {
