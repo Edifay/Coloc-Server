@@ -27,6 +27,33 @@ public class RequestsHandlers {
         return TransactionsManager.getTransactions(start, end);
     }
 
+    @GetMapping("get-transactions-list")
+    public static String[] getTransactionsList(@RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        return TransactionsManager.getSavedTransactionsList();
+    }
+
+    @GetMapping("get-transactions-saved")
+    public static ArrayList<Transaction> getTransactionsSaved(@RequestParam(value = "name") String date, @RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        return TransactionsManager.getTransactionsSaved(date);
+    }
+
+    @PostMapping("save-transactions")
+    public static boolean saveTransactions(@RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        try {
+            TransactionsManager.transferToSave();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @PostMapping("/create-transaction")
     public static boolean createTransaction(@RequestBody Transaction transaction,
                                             @RequestParam(value = "code") String code) throws Exception {
@@ -51,6 +78,15 @@ public class RequestsHandlers {
         if (!code.equals(password))
             throw new Exception("Wrong code !");
         return TransactionsManager.getTotalExpensesOfPerson(person);
+    }
+
+    @GetMapping("get-expenses-saved")
+    public static float getExpensesSaved(@RequestParam(value = "name") String date,
+                                                          @RequestParam(value = "person") Person person,
+                                                          @RequestParam(value = "code") String code) throws Exception {
+        if (!code.equals(password))
+            throw new Exception("Wrong code !");
+        return TransactionsManager.getTotalExpensesOfPersonDate(person, date);
     }
 
     @GetMapping("/get-equilibrate-transaction")
